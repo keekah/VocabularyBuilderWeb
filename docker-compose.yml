@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:12.4
+    container_name: vocab-db
+    environment:
+      - POSTGRES_USER=vocabadmin
+      - POSTGRES_PASSWORD=admin21
+      - POSTGRES_DB=vocabulary_words
+    volumes:
+      - VocabData:/var/lib/postgresql/data
+
+  app:
+    image: 'vocabularybuilder:latest'
+    container_name: vocab-web-app
+    depends_on:
+      - db
+    expose:
+      - 8080
+    ports:
+      - 8080:8080
+
+volumes:
+  VocabData:
+    external: true
