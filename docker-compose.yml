@@ -5,7 +5,7 @@ services:
     image: postgres:12.4
     container_name: vocab-db
     environment:
-      - POSTGRES_USER=vocabadmin
+      - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=admin21
       - POSTGRES_DB=vocabulary_words
     volumes:
