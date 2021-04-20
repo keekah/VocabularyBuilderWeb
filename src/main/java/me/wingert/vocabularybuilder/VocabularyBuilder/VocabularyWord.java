@@ -1,9 +1,6 @@
 package me.wingert.vocabularybuilder.VocabularyBuilder;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "vocabulary_words")
@@ -12,8 +9,20 @@ public class VocabularyWord {
     @Id
     @GeneratedValue
     private int id;
+
     private String word;
+
     private String definition;
+
+    @Column(name = "user_id")
+    private int userId;
+
+    @Column(name = "added_date_time")
+    private String addedDateTime;
+
+    @Column(name = "modified_date_time")
+    private String modifiedDateTime;
+
 
     public VocabularyWord() {}
 

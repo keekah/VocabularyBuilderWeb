@@ -2,79 +2,96 @@ package me.wingert.vocabularybuilder.VocabularyBuilder;
 
 import org.springframework.web.bind.annotation.*;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class Controller {
 
-    private final VocabWordRepository repository;
+    private final VocabWordRepository vocabWordRepository;
+    private final UserRepository userRepository;
 
-    public Controller(VocabWordRepository repository)
+    public Controller(VocabWordRepository vocabWordRepository, UserRepository userRepository)
     {
-        this.repository = repository;
+        this.vocabWordRepository = vocabWordRepository;
+        this.userRepository = userRepository;
     }
 
     @GetMapping("/vocabulary-words")
     public List<VocabularyWord> all()
     {
-        return repository.findAll();
+        return vocabWordRepository.findAll();
     }
+
+//    @GetMapping("/vocabulary-words")
+//    public List<VocabularyWord> getUserVocabularyWords() {
+//
+//    }
 
     @PostMapping("/new-word")
     public VocabularyWord newWord(@RequestBody VocabularyWord newWord)
     {
-        return repository.save(newWord);
+        return vocabWordRepository.save(newWord);
     }
 
-    @DeleteMapping("/vocabulary-words/{id}")
-    public void deleteWord(@PathVariable int id)
+    @DeleteMapping("/vocabulary-words")
+    public void deleteWord(String word)
     {
-        repository.deleteById(id);
+        VocabularyWord vocab = vocabWordRepository.findWord(word);
+
+        if (vocab == null)
+            throw new VocabWordNotFoundException(word);
+
+        vocabWordRepository.deleteById(vocab.getId());
     }
 
-    /*********************************************************************/
-//    @GetMapping("/vocabulary-words/{id}")
-//    public VocabularyWord getWord(@PathVariable int id)
-//    {
-//        return repository.findById(id)
-//                .orElseThrow(() -> new ResourceNotFoundException(id));
-//    }
-//
-//
-//
-//    @PutMapping("/vocabulary-words/{id}")
-//    public VocabularyWord updateDefinition(@PathVariable int id, @RequestBody VocabularyWord vocabWord)
-//    {
-//        return repository.findById(id)
-//                .map(word -> {
-//                    System.out.println("Word found! " + word);
-//                    String existingDefinition = word.getDefinition();
-//
-//                    try {
-//                        String definition = URLDecoder.decode(vocabWord.getDefinition(), StandardCharsets.UTF_8.name());
-//                        System.out.println("existing definition: " + existingDefinition);
-//                        if (existingDefinition == null)
-//                            word.setDefinition(definition);
-//                        else
-//                            word.setDefinition(existingDefinition + "; " + definition);
-//                    }
-//                    catch (UnsupportedEncodingException e)
-//                    {
-//                        System.out.println("Error decoding definition");
-//                        e.printStackTrace();
-//                    }
-//
-//                    VocabularyWord updatedWord = repository.save(word);
-//                    System.out.println("Saving new word " + updatedWord);
-//                    return updatedWord;
-//                })
-//                .orElseThrow(() -> new ResourceNotFoundException(id));
-//
-//    }
+    @PutMapping("/vocabulary-words")
+    public VocabularyWord updateVocabularyWord(@RequestBody VocabularyWord vocabWord)
+    {
+        VocabularyWord existingWord = vocabWordRepository.findWord(vocabWord.getWord());
+
+        // If this is a new word, store it as-is.
+        if (existingWord == null)
+            return vocabWordRepository.save(vocabWord);
+
+        // If we are adding this word again, but not passing a definition, do nothing.
+        if (vocabWord.getDefinition() == null)
+            return vocabWord;
+
+        // If we are adding this word again and providing a definition.
+        return verifyNewDefinition(existingWord, vocabWord);
+    }
+
+    // Verify that we are adding a new definition. existingWord may or may not have a definition (or multiple
+    // definitions in one String, separated with ';'), newWord has a non-null definition.
+    private VocabularyWord verifyNewDefinition(VocabularyWord existingWord, VocabularyWord newWord)
+    {
+        String existingDefinition = existingWord.getDefinition();
+        String newDefinition = newWord.getDefinition();
+
+        if (existingDefinition == null)
+        {
+            existingWord.setDefinition(newDefinition);
+            return vocabWordRepository.save(existingWord);
+        }
+
+        String [] existingDefinitions = existingDefinition.split(";");
+
+        for (String def : existingDefinitions)
+            if (def.trim().equals(newDefinition))
+                return existingWord;
+
+        // Adding a word that already exists and contains a new definition.
+        existingWord.setDefinition(existingDefinition + "; " + newDefinition);
+
+        return vocabWordRepository.save(existingWord);
+    }
+
+    @PutMapping("/users")
+    public User updateUser(@RequestBody User user)
+    {
+        return null;
+
+    }
+
 
 }
