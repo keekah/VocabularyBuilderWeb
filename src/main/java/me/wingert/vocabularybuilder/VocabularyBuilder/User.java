@@ -49,6 +49,24 @@ public class User {
         this.firebaseId = firebaseId;
     }
 
+    public User(String displayName,
+                String email,
+                boolean isEmailVerified,
+                String firebaseId,
+                String providerId,
+                String accountCreatedDateTime,
+                String lastSignInDateTime)
+    {
+        this.displayName = displayName;
+        this.email = email;
+        this.isEmailVerified = isEmailVerified;
+        this.firebaseId = firebaseId;
+        this.providerId = providerId;
+        this.accountCreatedDateTime = accountCreatedDateTime;
+        this.lastSignInDateTime = lastSignInDateTime;
+    }
+
+    // TODO remove this constructor (probably)
     public User(String firstName,
                 String lastName,
                 String displayName,

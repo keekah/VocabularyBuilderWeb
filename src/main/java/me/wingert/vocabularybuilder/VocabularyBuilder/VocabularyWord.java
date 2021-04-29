@@ -15,7 +15,7 @@ public class VocabularyWord {
     private String definition;
 
     @Column(name = "user_id")
-    private int userId;
+    private Integer userId;
 
     @Column(name = "added_date_time")
     private String addedDateTime;
@@ -30,6 +30,7 @@ public class VocabularyWord {
     {
         this.word = word;
         this.definition = definition;
+        userId = 2;
     }
 
     public void setId(int id) { this.id = id; }
