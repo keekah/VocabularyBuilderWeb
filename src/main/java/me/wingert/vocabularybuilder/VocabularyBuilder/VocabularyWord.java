@@ -17,11 +17,11 @@ public class VocabularyWord {
     @Column(name = "user_id")
     private Integer userId;
 
-    @Column(name = "added_date_time")
-    private String addedDateTime;
-
-    @Column(name = "modified_date_time")
-    private String modifiedDateTime;
+//    @Column(name = "added_date_time")
+//    private String addedDateTime;
+//
+//    @Column(name = "modified_date_time")
+//    private String modifiedDateTime;
 
 
     public VocabularyWord() {}

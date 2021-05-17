@@ -36,6 +36,7 @@ public class FirebaseConfig {
     @Bean
     public void firebaseInit()
     {
+        logger.info("FirebaseConfig firebaseInit()...");
         InputStream in = null;
         try
         {
@@ -57,7 +58,7 @@ public class FirebaseConfig {
                 FirebaseApp.initializeApp(firebaseOptions);
             }
 
-            logger.debug("Firebase initialized");
+            logger.info("Firebase initialized");
         }
         catch (IOException e)
         {

@@ -1,5 +1,7 @@
 package me.wingert.vocabularybuilder.VocabularyBuilder;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -7,6 +9,7 @@ import java.util.List;
 @RestController
 public class Controller {
 
+    private static final Logger logger = LoggerFactory.getLogger(Controller.class);
     private final VocabWordRepository vocabWordRepository;
     private final UserRepository userRepository;
 
@@ -14,11 +17,13 @@ public class Controller {
     {
         this.vocabWordRepository = vocabWordRepository;
         this.userRepository = userRepository;
+        logger.info("Controller created");
     }
 
     @GetMapping("/vocabulary-words")
     public List<VocabularyWord> all()
     {
+        logger.info("Controller:: all()");
         return vocabWordRepository.findAll();
     }
 
@@ -30,12 +35,15 @@ public class Controller {
     @PostMapping("/new-word")
     public VocabularyWord newWord(@RequestBody VocabularyWord newWord)
     {
+
+        logger.info("Controller:: newWord()");
         return vocabWordRepository.save(newWord);
     }
 
     @DeleteMapping("/vocabulary-words")
     public void deleteWord(String word)
     {
+        logger.info("Controller:: deleteWord()");
         VocabularyWord vocab = vocabWordRepository.findWord(word);
 
         if (vocab == null)
@@ -47,6 +55,8 @@ public class Controller {
     @PutMapping("/vocabulary-words")
     public VocabularyWord updateVocabularyWord(@RequestBody VocabularyWord vocabWord)
     {
+        logger.info("Controller:: updateVocabularyWord()");
+
         VocabularyWord existingWord = vocabWordRepository.findWord(vocabWord.getWord());
 
         // If this is a new word, store it as-is.
@@ -65,6 +75,8 @@ public class Controller {
     // definitions in one String, separated with ';'), newWord has a non-null definition.
     private VocabularyWord verifyNewDefinition(VocabularyWord existingWord, VocabularyWord newWord)
     {
+        logger.info("Controller:: verifyNewDefinition()");
+
         String existingDefinition = existingWord.getDefinition();
         String newDefinition = newWord.getDefinition();
 
@@ -89,8 +101,8 @@ public class Controller {
     @PutMapping("/users")
     public User updateUser(@RequestBody User user)
     {
+        logger.info("Controller:: updateUser()");
         return null;
-
     }
 
 
