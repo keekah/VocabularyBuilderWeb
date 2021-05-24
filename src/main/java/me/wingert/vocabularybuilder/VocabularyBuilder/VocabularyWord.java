@@ -17,6 +17,7 @@ public class VocabularyWord {
     @Column(name = "user_id")
     private Integer userId;
 
+    // TODO Update constructor, getters and setter for these fields.
 //    @Column(name = "added_date_time")
 //    private String addedDateTime;
 //
@@ -39,16 +40,20 @@ public class VocabularyWord {
 
     public void setDefinition(String definition) { this.definition = definition; }
 
+    public void setUserId(Integer userId) { this.userId = userId; }
+
     public int getId() { return id; }
 
     public String getWord() { return word; }
 
     public String getDefinition() { return definition; }
 
+    public Integer getUserId() { return userId; }
+
     @Override
     public String toString()
     {
-        return id + ", " + word + ": " + definition;
+        return id + ", " + word + ", " + definition + ", " + userId;
     }
 
 }

@@ -44,7 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     public FirebaseAuthTokenFilter firebaseAuthFilterBean() {
-        logger.info("firebaseAuthFilterBean():: creating instance of FirebaseAuthFilter");
+        logger.info("firebaseAuthFilterBean() :: creating instance of FirebaseAuthFilter");
         return new FirebaseAuthTokenFilter();
     }
 }

@@ -3,6 +3,7 @@ package me.wingert.vocabularybuilder.VocabularyBuilder;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "users")
@@ -35,10 +36,10 @@ public class User {
     private String providerId;
 
     @Column(name = "account_created_date_time")
-    private String accountCreatedDateTime;
+    private Timestamp accountCreatedDateTime;
 
     @Column(name = "last_sign_in_date_time")
-    private String lastSignInDateTime;
+    private Timestamp lastSignInDateTime;
 
 
     public User() {}
@@ -54,8 +55,8 @@ public class User {
                 boolean isEmailVerified,
                 String firebaseId,
                 String providerId,
-                String accountCreatedDateTime,
-                String lastSignInDateTime)
+                Timestamp accountCreatedDateTime,
+                Timestamp lastSignInDateTime)
     {
         this.displayName = displayName;
         this.email = email;
@@ -74,8 +75,8 @@ public class User {
                 boolean isEmailVerified,
                 String firebaseId,
                 String providerId,
-                String accountCreatedDateTime,
-                String lastSignInDateTime)
+                Timestamp accountCreatedDateTime,
+                Timestamp lastSignInDateTime)
     {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -104,9 +105,9 @@ public class User {
 
     public void setProviderId(String providerId) { this.providerId = providerId; }
 
-    public void setAccountCreatedDateTime(String creationDateTime) { accountCreatedDateTime = creationDateTime; }
+    public void setAccountCreatedDateTime(Timestamp creationDateTime) { accountCreatedDateTime = creationDateTime; }
 
-    public void setLastSignInDateTime(String lastSignInDateTime) { this.lastSignInDateTime = lastSignInDateTime; }
+    public void setLastSignInDateTime(Timestamp lastSignInDateTime) { this.lastSignInDateTime = lastSignInDateTime; }
 
     public int getId() { return id; }
 
@@ -124,14 +125,14 @@ public class User {
 
     public String getProviderId() { return providerId; }
 
-    public String getAccountCreatedDateTime() { return accountCreatedDateTime; }
+    public Timestamp getAccountCreatedDateTime() { return accountCreatedDateTime; }
 
-    public String getLastSignInDateTime() { return lastSignInDateTime; }
+    public Timestamp getLastSignInDateTime() { return lastSignInDateTime; }
 
     @Override
     public String toString()
     {
-        return id + " " + displayName + " " + email + " " + firebaseId;
+        return id + " " + displayName + " " + email + " " + firebaseId + " " + lastSignInDateTime.toString();
     }
 
 }
