@@ -14,12 +14,6 @@ public class User {
     @GeneratedValue
     private int id;
 
-    @Column(name = "first_name")
-    private String firstName;
-
-    @Column(name = "last_name")
-    private String lastName;
-
     @Column(name = "display_name")
     private String displayName;
 
@@ -32,9 +26,6 @@ public class User {
     @Column(name = "firebase_id")
     private String firebaseId;
 
-    @Column(name = "provider_id")
-    private String providerId;
-
     @Column(name = "account_created_date_time")
     private Timestamp accountCreatedDateTime;
 
@@ -42,19 +33,12 @@ public class User {
     private Timestamp lastSignInDateTime;
 
 
-    public User() {}
-
-    public User(String email, String firebaseId)
-    {
-        this.email = email;
-        this.firebaseId = firebaseId;
-    }
+    public User() { }
 
     public User(String displayName,
                 String email,
                 boolean isEmailVerified,
                 String firebaseId,
-                String providerId,
                 Timestamp accountCreatedDateTime,
                 Timestamp lastSignInDateTime)
     {
@@ -62,7 +46,6 @@ public class User {
         this.email = email;
         this.isEmailVerified = isEmailVerified;
         this.firebaseId = firebaseId;
-        this.providerId = providerId;
         this.accountCreatedDateTime = accountCreatedDateTime;
         this.lastSignInDateTime = lastSignInDateTime;
     }
@@ -78,22 +61,15 @@ public class User {
                 Timestamp accountCreatedDateTime,
                 Timestamp lastSignInDateTime)
     {
-        this.firstName = firstName;
-        this.lastName = lastName;
         this.displayName = displayName;
         this.email = email;
         this.isEmailVerified = isEmailVerified;
         this.firebaseId = firebaseId;
-        this.providerId = providerId;
         this.accountCreatedDateTime = accountCreatedDateTime;
         this.lastSignInDateTime = lastSignInDateTime;
     }
 
     public void setId(int id) { this.id = id; }
-
-    public void setFirstName(String firstName) { this.firstName = firstName; }
-
-    public void setLastName(String lastName) { this.lastName = lastName; }
 
     public void setDisplayName(String displayName) { this.displayName = displayName; }
 
@@ -103,17 +79,11 @@ public class User {
 
     public void setFirebaseId(String firebaseId) { this.firebaseId = firebaseId; }
 
-    public void setProviderId(String providerId) { this.providerId = providerId; }
-
     public void setAccountCreatedDateTime(Timestamp creationDateTime) { accountCreatedDateTime = creationDateTime; }
 
     public void setLastSignInDateTime(Timestamp lastSignInDateTime) { this.lastSignInDateTime = lastSignInDateTime; }
 
     public int getId() { return id; }
-
-    public String getFirstName() { return firstName; }
-
-    public String getLastName() { return lastName; }
 
     public String getDisplayName() { return displayName; }
 
@@ -122,8 +92,6 @@ public class User {
     public boolean getIsEmailVerified() { return isEmailVerified; }
 
     public String getFirebaseId() { return firebaseId; }
-
-    public String getProviderId() { return providerId; }
 
     public Timestamp getAccountCreatedDateTime() { return accountCreatedDateTime; }
 

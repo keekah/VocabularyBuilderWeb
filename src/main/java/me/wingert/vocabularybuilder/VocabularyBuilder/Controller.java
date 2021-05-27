@@ -31,7 +31,6 @@ public class Controller {
     @GetMapping("/vocabulary-words")
     public List<VocabularyWord> all(HttpServletRequest request)
     {
-        logger.info("Controller :: all() ::");
         User user = updateUsersTable(request);
 
         List<VocabularyWord> list = vocabWordRepository.fetchWordsForUser(user.getId());
@@ -63,14 +62,13 @@ public class Controller {
                     userRecord.getEmail(),
                     userRecord.isEmailVerified(),
                     userRecord.getUid(),
-                    null,
-                    new Timestamp(userRecord.getUserMetadata().getCreationTimestamp()),
-                    new Timestamp(userRecord.getUserMetadata().getLastSignInTimestamp()));
+                    getTimestampFor(userRecord.getUserMetadata().getCreationTimestamp()),
+                    getTimestampFor(userRecord.getUserMetadata().getLastSignInTimestamp()));
             user = userRepository.save(user);
             logger.info("Controller :: all() :: Added user " + user.toString());
         }
         else {
-            user.setLastSignInDateTime(new Timestamp(userRecord.getUserMetadata().getLastSignInTimestamp()));
+            user.setLastSignInDateTime(getTimestampFor(userRecord.getUserMetadata().getLastSignInTimestamp()));
             user = userRepository.save(user);
             logger.info("Controller :: all() :: Updated user " + user.toString());
         }
@@ -95,19 +93,20 @@ public class Controller {
         vocabWordRepository.deleteById(vocabWord.getId());
     }
 
-    // TODO Update word's added_date_time and modified_date_time
     @PutMapping("/vocabulary-words")
     public VocabularyWord updateVocabularyWord(@RequestBody VocabularyWord newWord, @RequestAttribute(FIREBASE_ID) String firebaseId)
     {
         User user = lookupUser(firebaseId);
 
         newWord.setUserId(user.getId());
+        newWord.setModifiedDateTime(getCurrentTimestamp());
 
         // Determine if this user has stored this word before.
         VocabularyWord existingWord = vocabWordRepository.findUserWord(newWord.getWord(), user.getId());
 
         // User is adding this word for the first time.
         if (existingWord == null) {
+            newWord.setAddedDateTime(getCurrentTimestamp());
             return vocabWordRepository.save(newWord);
         }
 
@@ -158,6 +157,15 @@ public class Controller {
             throw new UserNotFoundException(firebaseId);
 
         return user;
+    }
+
+
+    private Timestamp getCurrentTimestamp() {
+        return new Timestamp(System.currentTimeMillis());
+    }
+
+    private Timestamp getTimestampFor(long time) {
+        return new Timestamp(time);
     }
 
 }

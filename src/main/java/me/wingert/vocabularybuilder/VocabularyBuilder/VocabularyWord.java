@@ -1,6 +1,7 @@
 package me.wingert.vocabularybuilder.VocabularyBuilder;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "vocabulary_words")
@@ -18,21 +19,14 @@ public class VocabularyWord {
     private Integer userId;
 
     // TODO Update constructor, getters and setter for these fields.
-//    @Column(name = "added_date_time")
-//    private String addedDateTime;
-//
-//    @Column(name = "modified_date_time")
-//    private String modifiedDateTime;
+    @Column(name = "added_date_time")
+    private Timestamp addedDateTime;
+
+    @Column(name = "modified_date_time")
+    private Timestamp modifiedDateTime;
 
 
     public VocabularyWord() {}
-
-    public VocabularyWord(String word, String definition)
-    {
-        this.word = word;
-        this.definition = definition;
-        userId = 2;
-    }
 
     public void setId(int id) { this.id = id; }
 
@@ -42,6 +36,10 @@ public class VocabularyWord {
 
     public void setUserId(Integer userId) { this.userId = userId; }
 
+    public void setAddedDateTime(Timestamp timestamp) { addedDateTime = timestamp; }
+
+    public void setModifiedDateTime(Timestamp timestamp) { modifiedDateTime = timestamp; }
+
     public int getId() { return id; }
 
     public String getWord() { return word; }
@@ -49,6 +47,10 @@ public class VocabularyWord {
     public String getDefinition() { return definition; }
 
     public Integer getUserId() { return userId; }
+
+    public Timestamp getAddedDateTime() { return addedDateTime; }
+
+    public Timestamp getModifiedDateTime() { return modifiedDateTime; }
 
     @Override
     public String toString()
