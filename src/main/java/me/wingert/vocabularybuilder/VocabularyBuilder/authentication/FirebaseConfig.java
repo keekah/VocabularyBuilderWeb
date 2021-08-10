@@ -40,7 +40,7 @@ public class FirebaseConfig {
         InputStream in = null;
         try
         {
-            in = new ClassPathResource("firebase_config.json").getInputStream();
+            in = new ClassPathResource("firebase-config.json").getInputStream();
         }
         catch (IOException e)
         {
